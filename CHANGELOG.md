@@ -1,5 +1,20 @@
 # Changelog
 
+## v1.2.0 — 2026-10-30
+
+### Removed
+- Third-party vendor documents from `src_hardware/slambot/docs/`: `MDD10A_User_Manual.pdf` (Cytron), `Okdo_Lidar_Guide.pdf` (OKdo), and `JGA25-371_Open Impulse.pdf` (a saved product web page). The upstream setup guides (Pi camera, micro-ROS, motor-driver pinout) are kept under Apache-2.0.
+- `src_minimal/`: a duplicate of the ROS 2 packages and CAD already in `src_hardware/`.
+- `ros_config/slambot_description/`: a colcon install-space copy whose setup scripts contained an absolute path to the original build machine. The source package is in `src_hardware/slambot/ros_packages/slambot_description/`.
+- `slambot_slam/maps/campion_bedroom_2.*` and `campion_top_floor.*`: upstream maps of the original author's home, not related to this project.
+
+### Changed
+- `docs/Slambot_Report.docx`: removed the student ID from the title page and set the document author / last-modified-by metadata to "Salma Farid". Only those XML strings were edited; the content and formatting are unchanged.
+- `slambot_bringup/launch/real_nav_mode.launch.py`: the default `map` pointed to the removed `campion_bedroom_2.yaml`. It now defaults to `indoor_map_cartographer.yaml` as a placeholder (pass `map:=` for a real environment).
+- `README.md`: updated the file tree, the build commands (now `src_hardware/slambot`) and the notes to match the removals.
+
+Note: the removed files are still in the git history (commits before v1.2.0).
+
 ## v1.1.0 — 2026-10-28
 
 ### Fixed

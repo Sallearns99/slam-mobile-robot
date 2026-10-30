@@ -12,7 +12,7 @@ This was a mobile-robotics coursework project. I used the robot in **Gazebo simu
 
 ## Credits and what is mine
 
-The ROS 2 packages, firmware, CAD and setup guides under `src_hardware/` and `src_minimal/` come from **[benmay100/slambot](https://github.com/benmay100/slambot)** by Ben May, released under the Apache License 2.0 (see `src_hardware/slambot/LICENSE`). I used them as the robot platform for this project.
+The ROS 2 packages, firmware, CAD and setup guides under `src_hardware/` come from **[benmay100/slambot](https://github.com/benmay100/slambot)** by Ben May, released under the Apache License 2.0 (see `src_hardware/slambot/LICENSE`). I used them as the robot platform for this project.
 
 My own contributions are:
 
@@ -20,7 +20,7 @@ My own contributions are:
 - `ros_config/indoor_map_slam.pgm/.yaml` - the map I generated with slam_toolbox.
 - `ros_config/indoor_map_cartographer.png` - an export of the Cartographer map.
 - `ros_config/rviz_screenshot_*.png` and `ros_config/slambot.png` - RViz captures from my simulation runs, and a render of the robot.
-- `ros_config/` - the set of configs I used for the runs (RViz, Nav2 parameters, Gazebo world, built `slambot_description`).
+- `ros_config/` - the set of configs I used for the runs (RViz layouts, Nav2 parameters, Gazebo world).
 
 ## Robot platform
 
@@ -46,16 +46,14 @@ ros_config/                      Configs, maps and screenshots from my runs
 ├── indoor_map_cartographer.{pgm,yaml,png}  Cartographer map
 ├── indoor_world_with_qr_codes.sdf   Gazebo world used
 ├── nav2_sim_params.yaml             Nav2 parameters
-├── gazebo_rviz_*_config.rviz        RViz layouts for each SLAM method
-└── slambot_description/             Built (install-space) copy of the description package
+└── gazebo_rviz_*_config.rviz        RViz layouts for each SLAM method
 src_hardware/slambot/            Full workspace: ROS 2 packages + Pico firmware + Pi setup + CAD + guides
 ├── ros_packages/                    slambot_bringup, _description, _gazebo, _hardware,
 │                                    _localization, _nav2, _slam, _scripts
 ├── firmware/pico_code/              micro-ROS C firmware for motors, encoders and IMU
 ├── scripts/raspberry_pi_setup/      Boot-mode selector and systemd service
 ├── hardware/cad/                    STL files for the printed chassis
-└── docs/                            Setup guides and component references
-src_minimal/slambot/             The same ROS 2 packages and CAD, without firmware/scripts/docs (simulation only)
+└── docs/                            Setup guides (Pi camera, micro-ROS, motor-driver pinout)
 ```
 
 ## How to run (simulation)
@@ -64,7 +62,7 @@ Requirements: Ubuntu 24.04, ROS 2 Jazzy, Gazebo Sim (Harmonic), plus `rosdep` to
 
 ```bash
 mkdir -p ~/slambot_ws/src
-cp -r src_minimal/slambot ~/slambot_ws/src/
+cp -r src_hardware/slambot ~/slambot_ws/src/   # firmware/, hardware/, scripts/ and docs/ carry COLCON_IGNORE
 cd ~/slambot_ws
 rosdep install --from-paths src --ignore-src -r -y
 colcon build
@@ -106,8 +104,8 @@ The report (`docs/Slambot_Report.docx`) compares the two maps qualitatively. The
 ## Status & notes
 
 - The project was run in simulation. The real-robot launch files and firmware come from the upstream project and were not part of my runs.
-- `src_hardware/slambot/docs/` still contains vendor documents (the Cytron MDD10A user manual, the Okdo LiDAR guide, and a saved Open Impulse product page) from the upstream repo.
-- `ros_config/slambot_description/` is a colcon install-space copy. Its setup scripts contain the absolute path of my build machine, so build the package from source instead of sourcing these.
+- Vendor datasheets and manuals (Cytron MDD10A, Okdo LiDAR, JGA25-371 product page) are not included. Get them from the manufacturers.
+- `real_nav_mode.launch.py` defaults to the simulated indoor map as a placeholder. On the real robot, pass `map:=/path/to/your_map.yaml`.
 - Verify topic names and frame IDs against your ROS 2 distro.
 
 ---
